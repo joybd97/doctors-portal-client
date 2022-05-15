@@ -4,8 +4,14 @@ import SingleTestimonial from '../SingleTestimonial/SingleTestimonial';
 import p1 from '../../../images/people1.png';
 import p2 from '../../../images/people2.png';
 import p3 from '../../../images/people3.png';
+import bg from '../../../icons/quote.svg'
 
-
+const Bg = {
+    background: `url(${bg})`,
+    backgroundRepeat  : 'no-repeat',
+    backgroundPosition : 'right'
+     
+}
 const testimonials =[
     {
         id:1,
@@ -33,7 +39,7 @@ const testimonials =[
 const Testimonial = () => {
     return (
         <Container>
-            <div >
+            <div style={Bg} >
                 <Typography variant="h6" sx={{mt: 10, textAlign: 'left'}} style={{color: '#5CE7ED'}}>
                 TESTIMONIAL
                 </Typography>
