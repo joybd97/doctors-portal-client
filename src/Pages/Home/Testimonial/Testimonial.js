@@ -21,14 +21,14 @@ const testimonials =[
         img: p1
     },
     {
-        id:1,
+        id:2,
         name: 'Marry Wiliam',
         city: 'California',
         text:  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione facere suscipit amet similique pariatur modi neque velit doloremque eligendi',
         img: p2
     },
     {
-        id:1,
+        id:3,
         name: 'Patinson Harry',
         city: 'California',
         text:  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione facere suscipit amet similique pariatur modi neque velit doloremque eligendi',
