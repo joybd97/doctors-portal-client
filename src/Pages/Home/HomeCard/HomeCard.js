@@ -3,7 +3,6 @@ import clock from '../../../icons/clock.svg';
 import location from '../../../icons/marker.svg';
 import call from '../../../icons/phone.svg';
 import {Container, Grid } from '@mui/material';
-import { Box } from '@mui/system';
 
 const HomeCard = () => {
     return (
