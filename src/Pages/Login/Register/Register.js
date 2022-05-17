@@ -1,5 +1,6 @@
 import { Alert, AlertTitle, Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import login from '../../../images/login.png'
@@ -7,6 +8,7 @@ import login from '../../../images/login.png'
 const Register = () => {
     const [loginData,setLoginData] =useState({});
     const {user,registerUser,isLoading, authError}= useAuth();
+    const history = useHistory();
     
     const handelOnChange = e =>{
         const field = e.target.name;
@@ -18,10 +20,10 @@ const Register = () => {
     const handelSubmit = e=>{
 
         if(loginData.password !== loginData.password1){
-            alert('Password didnot match');
+            alert('Password did not match');
             return;
         }
-        registerUser(loginData.email, loginData.password);
+        registerUser(loginData.email, loginData.password,loginData.name,history);
         
         e.preventDefault();
     }
@@ -31,6 +33,13 @@ const Register = () => {
                 <Grid item xs={12} md={6} sx={{mt: 10}}>
                     <Typography variant="body1" gutterBottom>Register</Typography>
                     {!isLoading  && <form onSubmit={handelSubmit}>
+                    <TextField id="standard-basic"
+                    sx={{width:'75%', m:1}}
+                    name ="name"
+                    onChange={handelOnChange}
+                     label="Your Name"
+                     variant="standard"
+                    />
                     <TextField id="standard-basic"
                     sx={{width:'75%', m:1}}
                     name ="email"

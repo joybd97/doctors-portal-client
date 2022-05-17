@@ -1,5 +1,7 @@
 import { Alert, AlertTitle, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import login from '../../../images/login.png'
@@ -8,7 +10,13 @@ import login from '../../../images/login.png'
 
 const Login = () => {
 const [loginData,setLoginData] =useState({})
-const {user,loginUser,isLoading, authError} = useAuth();
+const {user,loginUser,isLoading,signInWithGoogle, authError} = useAuth();
+const location = useLocation();
+const history = useHistory();
+
+const handelGoogleSignIn =()=>{
+    signInWithGoogle(location,history);
+}
 
 const handelOnChange = e =>{
     const field = e.target.name;
@@ -18,7 +26,7 @@ const handelOnChange = e =>{
     setLoginData(newLoginData);
 }
 const handelSubmit = e=>{
-    loginUser(loginData.email, loginData.password);
+    loginUser(loginData.email, loginData.password, location,history);
     e.preventDefault();
 }
     return (
@@ -64,6 +72,8 @@ const handelSubmit = e=>{
                     }
 
                     </form>
+                    <p>-----------------------------</p>
+                    <Button onClick={handelGoogleSignIn} variant="contained">Google Sign In</Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     
