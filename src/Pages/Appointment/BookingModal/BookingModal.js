@@ -44,7 +44,7 @@ const BookingModal = ({openBooking,handleBookingClose, booking,date,setBookingSu
            serviceName: name,
            date: date.toLocaleDateString(),
          }
-         fetch('http://localhost:5000/appointments',{
+         fetch('https://intense-sea-12604.herokuapp.com/appointments',{
            method: 'POST',
            headers: {
              'content-type': 'application/json'

@@ -6,28 +6,32 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Button, Grid } from '@mui/material';
-import Calender from '../../Shared/Calender/Calender';
-import Appointments from '../Appointments/Appointments';
-import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from "react-router-dom";
+import DashboardHome from '../DashboardHome/DashboardHome';
+import MakeAdmin from '../MakeAdmin/MakeAdmin';
+import AddDoctor from '../AddDoctor/AddDoctor';
+import useAuth from '../../../hooks/useAuth';
+import AdminRoute from '../../Login/AdminRoute/AdminRoute';
+
+
 
 const drawerWidth = 240;
 
 function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [date,setDate] = React.useState(new Date());
-
+  const {admin} = useAuth();
+  
+  let { path, url } = useRouteMatch();
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -35,20 +39,17 @@ function Dashboard(props) {
   const drawer = (
     <div>
       <Toolbar />
-      <Link to="/appointment"><Button color="inherit">Appointment</Button></Link>
       <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      
+      <Link to="/appointment"><Button color="inherit">Appointment</Button></Link><br />
+      <Link to={`${url}`}><Button color="inherit">Dashboard</Button></Link><br />
+      {
+        admin && <Box>
+        <Link to={`${url}/makeAdmin`}><Button color="inherit">Make Admin</Button></Link><br />
+      <Link to={`${url}/addDoctor`}><Button color="inherit">Add Doctor</Button></Link>
+        </Box>
+      }
+      
       <Divider />
 
     </div>
@@ -118,20 +119,19 @@ function Dashboard(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Typography paragraph>
-           <Grid container spacing={2}>
-                <Grid item xs={12} sm={5}>
-                    <Calender
-                    date={date}
-                    setDate={setDate}
-                    ></Calender>
-                </Grid>
-                <Grid item xs={12} sm={7}>
-                    <Appointments date={date}></Appointments>
-                </Grid>
-
-           </Grid>
-        </Typography>
+        
+        <Switch>
+        <Route exact path={path}>
+         <DashboardHome></DashboardHome>
+        </Route>
+        <AdminRoute path={`${path}/makeAdmin`}>
+           <MakeAdmin></MakeAdmin>
+        </AdminRoute>
+        <AdminRoute path={`${path}/addDoctor`}>
+          <AddDoctor></AddDoctor>
+        </AdminRoute>
+      </Switch>
+        
          
       </Box>
     </Box>

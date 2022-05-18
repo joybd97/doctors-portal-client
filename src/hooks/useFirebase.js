@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import initializeFirebase from "../Pages/Login/Firebase/firebase.env";
-import { getAuth, createUserWithEmailAndPassword,updateProfile,signOut,signInWithPopup,onAuthStateChanged,signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,updateProfile,signOut,
+  signInWithPopup,onAuthStateChanged,signInWithEmailAndPassword,
+  getIdToken, GoogleAuthProvider } from "firebase/auth";
 
 initializeFirebase();
 const useFirebase =() =>{
     const [user,setUser] = useState({});
     const [isLoading,setIsLoading] = useState(true);
     const [authError,setAuthError] = useState('')
+    const [admin,setAdmin]= useState(false);
+    const [token,setToken] = useState('');
 
 
     const auth = getAuth();
@@ -80,6 +84,10 @@ const useFirebase =() =>{
        const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
               setUser(user);
+              getIdToken(user)
+              .then(idToken => {
+                setToken(idToken);
+              })
               const uid = user.uid;
               // ...
             } else {
@@ -90,6 +98,12 @@ const useFirebase =() =>{
 
           return ()=> unsubscribe;
     },[])
+
+    useEffect(()=>{
+      fetch(`https://intense-sea-12604.herokuapp.com/users/${user.email}`)
+      .then(res=>res.json())
+      .then(data=> setAdmin(data.admin))
+    },[user.email])
 
     const logout=()=>{
         setIsLoading(true)
@@ -104,7 +118,7 @@ const useFirebase =() =>{
 
     const saveUser =(email,displayName,method)=>{
         const user={email,displayName};
-        fetch('http://localhost:5000/users',{
+        fetch('https://intense-sea-12604.herokuapp.com/users',{
           method: method,
           headers:{
             'content-type': 'application/json'
@@ -117,6 +131,8 @@ const useFirebase =() =>{
 
     return{
         user,
+        admin,
+        token,
         registerUser,
         logout,
         loginUser,
